@@ -1,0 +1,8 @@
+{
+  "name": "digo-docs",
+  "description": "Design-system documentation: implement-component-docs, audit-docs.",
+  "author": {
+    "name": "Digo Labs",
+    "email": "digo@productionclub.net"
+  }
+}

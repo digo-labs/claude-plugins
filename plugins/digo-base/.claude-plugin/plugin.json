@@ -1,0 +1,8 @@
+{
+  "name": "digo-base",
+  "description": "Portable, repo-agnostic planning skills: brainstorm, grill-me.",
+  "author": {
+    "name": "Digo Labs",
+    "email": "digo@productionclub.net"
+  }
+}

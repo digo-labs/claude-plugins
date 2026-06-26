@@ -1,6 +1,6 @@
 ---
 name: review
-description: Full quality review of changed code. Validates every file against monorepo patterns (same approach as /code but in reverse) and checks all component APIs against actual source. Fixes issues directly. Use after writing code or before merging.
+description: Full quality review of changed code. Validates every file against monorepo patterns (the same pattern-matching approach as writing code, but in reverse) and checks all component APIs against actual source. Fixes issues directly. Use after writing code or before merging.
 ---
 
 # Review: $ARGUMENTS
@@ -26,7 +26,7 @@ Each agent receives its batch of files and these instructions:
 
 ### 2a. Find Similar Code
 
-Use the same discovery approach as the `/code` skill:
+Use this discovery approach (the same one used when writing new code):
 
 1. **By location** — list files in the same directory and sibling directories (NOT in the target app — look in the monorepo: other apps, packages)
 2. **By type** — find files of the same kind elsewhere (if reviewing a page, find other pages; if a hook, find other hooks; if a util, find other utils)

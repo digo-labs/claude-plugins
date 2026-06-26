@@ -6,14 +6,29 @@
   },
   "plugins": [
     {
-      "name": "digo-toolkit",
-      "source": "./plugins/digo-toolkit",
-      "description": "Portable Claude Code skills for any repo: brainstorm, grill-me, code, review, vibe, audit-docs."
+      "name": "digo-base",
+      "source": "./plugins/digo-base",
+      "description": "Portable, repo-agnostic planning skills: brainstorm, grill-me."
     },
     {
-      "name": "digo-internal",
-      "source": "./plugins/digo-internal",
-      "description": "Digo labs related skills"
+      "name": "digo-core",
+      "source": "./plugins/digo-core",
+      "description": "Coding in the digo monorepo: code, review, context."
+    },
+    {
+      "name": "digo-ui",
+      "source": "./plugins/digo-ui",
+      "description": "Authoring the @digo-labs/ui library: implement-component, create-preset."
+    },
+    {
+      "name": "digo-docs",
+      "source": "./plugins/digo-docs",
+      "description": "Design-system documentation: implement-component-docs, audit-docs."
+    },
+    {
+      "name": "digo-app",
+      "source": "./plugins/digo-app",
+      "description": "Build & tear down apps on @digo-labs packages: create-digo-app, destroy-digo-app."
     }
   ]
 }

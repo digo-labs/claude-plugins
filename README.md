@@ -7,37 +7,48 @@ Marketplace name: `digo-labs`
 
 ## Plugins
 
-| Plugin | Use it in | Skills |
+Skills are split by audience and subsystem:
+
+| Plugin | Use it for | Skills |
 | --- | --- | --- |
-| **digo-toolkit** | any repo | `brainstorm`, `grill-me`, `code`, `review`, `vibe`, `audit-docs` |
-| **digo-internal** | digo repos (monorepo + design system) | `create-digo-app`, `destroy-digo-app`, `context`, `create-preset`, `implement-component`, `implement-component-docs` |
+| **digo-base** | any repo, any project | `brainstorm`, `grill-me` |
+| **digo-core** | coding in the digo monorepo | `code`, `review`, `context` |
+| **digo-ui** | authoring the `@digo-labs/ui` library | `implement-component`, `create-preset` |
+| **digo-docs** | the design-system docs site | `implement-component-docs`, `audit-docs` |
+| **digo-app** | building apps on `@digo-labs/*` packages | `create-digo-app`, `destroy-digo-app` |
 
 ## Install
 
 ```shell
 /plugin marketplace add digo-labs/claude-plugins
-/plugin install digo-toolkit@digo-labs
-/plugin install digo-internal@digo-labs
+/plugin install digo-base@digo-labs
+/plugin install digo-core@digo-labs
+/plugin install digo-ui@digo-labs
+/plugin install digo-docs@digo-labs
+/plugin install digo-app@digo-labs
 ```
 
-If you work inside the `digo-labs/core` monorepo, both plugins are registered and
-auto-enabled for you via that repo's `.claude/settings.json` — just trust the
-workspace when prompted.
+Inside the `digo-labs/core` monorepo every plugin is registered and auto-enabled via that
+repo's `.claude/settings.json` — just trust the workspace when prompted. In other repos,
+install the ones you need (`digo-base` and `digo-app` are the usual picks outside `core`).
 
 ## Invoking skills
 
 Plugin skills are **namespaced by plugin name**:
 
 ```shell
-/digo-toolkit:brainstorm
-/digo-internal:create-digo-app
+/digo-base:brainstorm
+/digo-core:code
+/digo-ui:implement-component
+/digo-docs:audit-docs
+/digo-app:create-digo-app
 ```
 
 ## Updates
 
 Plugins track the **latest commit** on `main` (no pinned versions). With
-`"autoUpdate": true` set for this marketplace, teammates pick up new pushes on the
-next Claude Code startup. To pull manually:
+`"autoUpdate": true` set for this marketplace, teammates pick up new pushes on the next
+Claude Code startup. To pull manually:
 
 ```shell
 /plugin marketplace update digo-labs
@@ -45,6 +56,7 @@ next Claude Code startup. To pull manually:
 
 ## Contributing
 
-Each skill lives at `plugins/<plugin>/skills/<skill-name>/SKILL.md`. Edit it, commit,
-push to `main` — that's the release. To add a skill, create a new folder under the
-relevant plugin's `skills/` directory.
+Each skill lives at `plugins/<plugin>/skills/<skill-name>/SKILL.md`. Edit it, commit, push
+to `main` — that's the release. To add a skill, create a new folder under the relevant
+plugin's `skills/` directory. Keep skills **self-contained**: don't reference another
+skill by filesystem path, since plugins are cached independently.

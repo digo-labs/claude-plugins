@@ -1,0 +1,8 @@
+{
+  "name": "digo-ui",
+  "description": "Authoring the @digo-labs/ui library: implement-component, create-preset.",
+  "author": {
+    "name": "Digo Labs",
+    "email": "digo@productionclub.net"
+  }
+}

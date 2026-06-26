@@ -18,9 +18,11 @@ Focus on: available sub-components, props API, accessibility behavior, variants/
 
 ## Step 2: Learn Project Patterns
 
-Before writing any code, read and follow `.claude/skills/code/SKILL.md` to analyze existing code patterns in the project. Target your search on:
-- Component files in `packages/ui/src/components/`
-- Style files in `packages/ui/src/styles/`
+Before writing any code, study existing patterns and match them exactly — don't rely on any other skill being installed:
+
+1. **Find similar code** — read 3–5 existing components in `packages/ui/src/components/` and their style files in `packages/ui/src/styles/` *in full*. More is better.
+2. **Extract patterns** — naming, file/section structure, import ordering, export style, TypeScript conventions (types vs interfaces, prop typing, generics), composition and helper usage, Tailwind design-system token usage (no arbitrary values), comments, and formatting (indentation, spacing, trailing commas).
+3. **Match every pattern** — the new component must look like the existing ones, never generic "best practice" defaults.
 
 ## Step 3: Create Files
 
