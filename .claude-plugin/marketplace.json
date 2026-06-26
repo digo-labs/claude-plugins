@@ -13,7 +13,7 @@
     {
       "name": "digo-internal",
       "source": "./plugins/digo-internal",
-      "description": "Digo monorepo & design-system skills: create-digo-app, destroy-digo-app, context, create-preset, implement-component, implement-component-docs."
+      "description": "Digo labs related skills"
     }
   ]
 }
