@@ -1,0 +1,19 @@
+{
+  "name": "digo-labs",
+  "owner": {
+    "name": "Digo Labs",
+    "email": "digo@productionclub.net"
+  },
+  "plugins": [
+    {
+      "name": "digo-toolkit",
+      "source": "./plugins/digo-toolkit",
+      "description": "Portable Claude Code skills for any repo: brainstorm, grill-me, code, review, vibe, audit-docs."
+    },
+    {
+      "name": "digo-internal",
+      "source": "./plugins/digo-internal",
+      "description": "Digo monorepo & design-system skills: create-digo-app, destroy-digo-app, context, create-preset, implement-component, implement-component-docs."
+    }
+  ]
+}
