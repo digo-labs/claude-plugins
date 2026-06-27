@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Turn a vague idea into a crystal-clear, detailed concept ready to feed into /vibe. Co-creates with the user through relentless questioning until every aspect is defined. Use when user has a rough idea and wants to shape it before building.
+description: Turn a vague idea into a crystal-clear, detailed concept ready to build. Co-creates with the user through relentless questioning until every aspect is defined. Use when user has a rough idea and wants to shape it before building.
 ---
 
 # Brainstorm: $ARGUMENTS
@@ -43,7 +43,7 @@ Either the user says they're done, or you propose wrapping up when all branches 
 
 ## Output
 
-When done, print a structured summary to chat. This summary must be detailed enough that feeding it to /vibe produces a crystal-clear plan with no ambiguity.
+When done, print a structured summary to chat. This summary must be detailed enough to build from directly, with no ambiguity.
 
 **Summary structure:**
 - **Concept**: one-paragraph description of what it is
