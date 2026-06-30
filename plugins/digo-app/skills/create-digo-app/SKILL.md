@@ -107,7 +107,7 @@ Tell the user what's next:
 | `gh repo create` / `git clone` returns "Permission denied" | User lacks access to the `digo-labs` org. | Confirm membership; surface the error. |
 | `gh auth status` fails | Not logged in to GitHub CLI. | Run `gh auth login`, or switch to the web-template path. |
 | `npm install` fails | Node version mismatch (must be 22+) or registry issue. | Show the error verbatim; check Node version first. |
-| `init-aws` fails on secret access | User lacks `Developers` IAM group permissions on the `monorepo/*` secrets. | Surface the script's own error; suggest contacting the admin or running with `AWS_PROFILE=digo`. |
+| `init-aws` fails on secret access | Provisioner session expired, or its permission set can't read `monorepo/*`. | Surface the script's own error; have the user run `aws sso login --sso-session productionclub`, or ask an admin to check the Provisioner permission set. |
 | Target directory exists | — | Refuse to continue. Ask the user to pick a different name or remove the existing directory. |
 
 ## Do not

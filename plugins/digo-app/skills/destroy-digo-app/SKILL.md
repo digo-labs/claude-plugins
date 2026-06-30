@@ -21,7 +21,7 @@ Use `AskUserQuestion`.
 ## Prerequisites (stop on any failure; surface the error)
 
 - Run from inside the app's directory (where `package.json` and `scripts/destroy.sh` live).
-- `aws sts get-caller-identity` succeeds **and** the profile can delete. The `Developers` group is read-mostly, so you'll almost always need `AWS_PROFILE=digo` (admin).
+- `aws sts get-caller-identity` succeeds (run `aws sso login --sso-session productionclub` if your session expired). `npm run destroy` runs under the **Provisioner** profile automatically, which carries the delete permissions — you don't set a profile by hand.
 - The user has explicitly confirmed they want to destroy this specific app.
 
 ## Workflow
@@ -40,10 +40,10 @@ Shared `monorepo/*` secrets, the git repo, and `.env` are left untouched.
 
 ```bash
 # remove everything, including the Postgres schema:
-AWS_PROFILE=digo npm run destroy
+npm run destroy
 
 # remove the AWS infra but keep the schema + data:
-AWS_PROFILE=digo npm run destroy -- --keep-db
+npm run destroy -- --keep-db
 ```
 
 The script prints what it will delete, then asks you to **type the exact app name to confirm** before doing anything. Provide the name from `package.json`. It then proceeds in order: drop the Postgres schema (unless `--keep-db`) → delete the Amplify domain association → delete the Amplify app → empty and delete the S3 bucket. Surface the output verbatim.
@@ -58,7 +58,7 @@ The script prints what it will delete, then asks you to **type the exact app nam
 
 | Error | Likely cause | Action |
 |---|---|---|
-| Access denied on a delete call | Profile lacks delete permissions (the `Developers` group can't). | Re-run with `AWS_PROFILE=digo`. |
+| Access denied on a delete call | Provisioner session expired, or its permission set is missing a delete action. | Run `aws sso login --sso-session productionclub`; if it persists, ask an admin to check the Provisioner permission set. |
 | "Could not read name from package.json" | Not run from an app cloned from app-template. | `cd` into the app directory and retry. |
 | Confirmation aborted | Typed name didn't match. | Re-run and type the exact `package.json` "name". |
 | Schema drop fails on missing `.env` | `.env` was removed before teardown. | Re-run with `--keep-db` to skip the schema drop, or restore `.env` (`init-aws` writes it). |
@@ -66,7 +66,7 @@ The script prints what it will delete, then asks you to **type the exact app nam
 ## Do not
 
 - Run without explicit confirmation of the specific app — this is irreversible and empties the bucket.
-- Assume `Developers` permissions are enough — use `AWS_PROFILE=digo`.
+- Override the profile — `npm run destroy` already forces `AWS_PROFILE=provisioner`; don't set `AWS_PROFILE` to anything else.
 - Touch shared `monorepo/*` secrets or any other app's resources.
 
 ## Caution
