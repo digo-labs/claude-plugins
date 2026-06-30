@@ -1,54 +1,60 @@
 ---
 name: code
-description: Write code that matches your personal coding patterns. Use when asked to create any code — components, utilities, hooks, helpers, configs, scripts, types, etc. Dynamically analyzes existing code before writing.
+description: Write code that follows the Digo design-system patterns, sourced from the docs (llms.txt). Use when asked to create any Digo code — components, pages, hooks, helpers, services, schemas, configs, types, etc. Works in any repo.
 ---
 
 # Write Code: $ARGUMENTS
 
-## Step 1: Understand the Request
+Write code that follows the Digo patterns exactly as the **design-system docs** define them. The docs are the single source of truth: every Digo app follows the same documented patterns, so you reproduce the canonical pattern rather than mining the local codebase. This works from any repo — you never need the monorepo or `node_modules`.
 
-Parse what is being asked from: `$ARGUMENTS`
+## Step 1: Understand the request
 
-Determine:
-- **What type** of artifact:component, utility, hook, helper, config, script, type, test, etc.
-- **Where it should live** in the project
-- **What it should do**
+Parse from `$ARGUMENTS`:
 
-## Step 2: Find Similar Code
+- **What kind** of artifact — component, page, hook, helper/util, service/class, factory (`define*`/`create*`), schema/constants, backend route/service, provider, config, type, test.
+- **Where it should live** — the file path in the current app (use the docs' Project Structure if unsure).
+- **What it should do.**
 
-Before writing anything, search the codebase for the most similar existing code:
+## Step 2: Load the docs
 
-1. **By location** — list files in the target directory and its siblings to understand the neighborhood
+The docs index is `https://design.digo-labs.com/llms.txt`. Fetch it if it isn't already in the conversation. It lists every page with a one-line description and a raw-`.mdx` link.
 
-2. **By type** — find files of the same kind (e.g., other hooks if writing a hook, other utils if writing a util, other configs if writing a config)
+From the index, select the pages relevant to the artifact and fetch their `.mdx`:
 
-3. **By relevance** — if the new code relates to an existing feature, read that feature's code too
+- **Always** read the applicable Code Patterns pages: TypeScript Patterns, Imports and Exports, Error Handling.
+- Match the artifact to its specific **Code Patterns** page:
+  - helper / util / formatter / validator / small client → **Helpers and Singletons**
+  - service or generic data/resource class → **Classes and Services**
+  - a `define*` / `create*` wiring function → **Factory Functions**
+  - Zod schema, shared types, a constant/route registry, an enum → **Schemas and Constants**
+  - a backend route or service function → **Backend Patterns**
+  - a custom hook or context provider → **Hooks and Providers**
+- For a **component**: read the docs page of every `@digo-labs/ui` component or block you'll use (for its **API Reference** table), plus Composition and the Styling pages as needed. For a brand-new shared component, read Contributing → Creating Components and Styling Components.
+- For tables / auth / storage / AI / websockets / routing / forms: read that guide page.
 
-Read at least 3–5 of the closest matches **in full**. More is better. Do not skip this step.
+Fetch every page you'll rely on. Do not proceed from memory.
 
-## Step 3: Extract Patterns
+## Step 3: Extract the patterns and the API
 
-From the files you read, identify and document these patterns before writing any code:
+From the fetched pages, note the conventions you must match:
 
-- **Naming** — file names, function/variable/type names, casing, prefixes, suffixes
-- **File structure** — import ordering, export style (named vs default), section organization
-- **TypeScript** — how types/interfaces are defined, generics usage, prop typing conventions
-- **Code style** — arrow functions vs declarations, early returns, destructuring habits, ternaries vs if/else
-- **Composition** — abstraction level, how things are combined, helper usage
-- **Imports** — which packages are used, internal import paths, barrel file conventions
-- **Error handling** — validation, edge cases, fallback patterns
-- **Comments** — when they're used, tone, density (or absence)
-- **Formatting** — indentation, spacing, trailing commas, line break habits
+- **Naming** — files, functions, variables, types; casing, prefixes, suffixes.
+- **The authoring shape** for this artifact — e.g. a helper is a static-method class (`class XHelpers { static … }`); a stateful one is the `init()`-guarded singleton; a factory returns a grouped typed object; a schema is paired with `z.infer`.
+- **TypeScript** — the `Properties` interface convention, generics, types vs interfaces.
+- **Imports/exports** — named exports, import grouping/ordering, barrel files.
+- **Error handling** — the `tryCatch` Result tuple; throw only for programmer error.
+- **The exact API** of every `@digo-labs/*` symbol you'll use, taken from its page's API Reference (props, methods, signatures).
 
-## Step 4: Write the Code
+## Step 4: Write the code
 
-Write code that matches **every pattern** you identified. The output must look like the user wrote it — same habits, same structure, same style.
+Write it to match every pattern from Step 3. Read the target file only so you can edit it correctly — **do not** copy conventions from sibling local files; the docs define the conventions, and apps converge to the docs.
 
-After writing, register exports in any relevant barrel/index files following the same conventions as existing entries.
+Rules:
 
-## Key Requirements
+- Use **only documented APIs**. If a prop, method, or pattern you need is **not in the docs**, do not invent it — flag it (the docs have a gap to patch with `/audit-docs`) and use the closest documented approach.
+- Register exports in the relevant barrel/index per Imports and Exports.
+- Match the docs' formatting — alignment, trailing commas, spacing.
 
-- NEVER fall back to generic or "best practice" defaults — always match what exists
-- Prefer the user's existing abstractions and utilities over introducing new ones
-- If the codebase has no similar code, widen the search to adjacent areas
-- Match formatting exactly — indentation, spacing, line breaks, trailing commas
+## Step 5: Confirm
+
+Briefly note which doc pages you used, and call out any symbol you couldn't verify against the docs.
