@@ -36,7 +36,7 @@ Check the file against the documented conventions:
 - **React** — **no function declarations inside `useEffect`** (define them in the hook/component body and reference by name); global or feature-shared state via **signals** (`utils/signals.ts` or the feature folder).
 - **The authoring shape for its kind** — e.g. a helper is a static-method class, not loose functions; a stateful singleton uses `init()` + a guarded getter; a schema is paired with `z.infer`; a factory returns a grouped typed object.
 - **Error handling** — `tryCatch` Result tuple; throw only for programmer error.
-- **Placement** — the file lives where Project Structure says (`src/app/` feature folders, `src/utils/`, `src/helpers/`).
+- **Placement** — the file lives where Project Structure says (`src/components/{feature}/`, `src/pages/`, `src/utils/`, `src/helpers/`).
 - **Tailwind** — design-system tokens, no arbitrary values.
 - **Formatting** — alignment, trailing commas, spacing.
 
