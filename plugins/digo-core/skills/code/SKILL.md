@@ -22,7 +22,7 @@ The docs index is `https://design.digo-labs.com/llms.txt`. Fetch it if it isn't 
 From the index, select the pages relevant to the artifact and fetch their `.mdx`:
 
 - **Always** read the applicable Code Patterns pages: TypeScript Patterns, Imports and Exports, Error Handling.
-- Match the artifact to its specific **Code Patterns** page:
+- Match the artifact to its specific pattern page (in the **Development** section):
   - helper / util / formatter / validator / small client → **Helpers and Singletons**
   - service or generic data/resource class → **Classes and Services**
   - a `define*` / `create*` wiring function → **Factory Functions**

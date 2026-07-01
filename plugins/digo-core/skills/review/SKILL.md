@@ -16,7 +16,7 @@ Run `git diff --name-only` and `git ls-files --others --exclude-standard`. Filte
 Fetch `https://design.digo-labs.com/llms.txt`. Based on the kinds of code in the diff, fetch the relevant pages:
 
 - The Code Patterns pages — TypeScript Patterns, Imports and Exports, Error Handling — they apply to everything.
-- The specific **Code Patterns** page matching each non-component file: helper → Helpers and Singletons, service/class → Classes and Services, factory → Factory Functions, schema/constants → Schemas and Constants, backend → Backend Patterns, hook/provider → Hooks and Providers.
+- The specific pattern page (in the **Development** section) matching each non-component file: helper → Helpers and Singletons, service/class → Classes and Services, factory → Factory Functions, schema/constants → Schemas and Constants, backend → Backend Patterns, hook/provider → Hooks and Providers.
 - For every `@digo-labs/ui` component or block used in the diff, its docs page — for the **API Reference** table.
 
 Fetch every page you need; do not review from memory.

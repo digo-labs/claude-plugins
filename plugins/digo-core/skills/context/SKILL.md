@@ -9,7 +9,7 @@ Build a working model of the Digo stack from the **design-system docs** — the 
 
 ## Step 1: Load the index
 
-Fetch `https://design.digo-labs.com/llms.txt`. It lists every page — Guide, Packages, Code Patterns, Styling, Components, Blocks, Effects, Skills — each with a one-line description and a raw-`.mdx` link.
+Fetch `https://design.digo-labs.com/llms.txt`. It lists every page grouped by section — Guide, Development, Skills, Components, Blocks, Utils, Effects — each with a one-line description and a raw-`.mdx` link.
 
 ## Step 2: Read the foundational pages
 
@@ -17,7 +17,7 @@ Fetch and read these (in parallel where you can):
 
 - **Overview** — Introduction, Ecosystem Overview, Project Structure, Backend Architecture.
 - **Packages** — Common, UI, Services, App, WS.
-- **Code Patterns** — TypeScript Patterns, Naming, Imports and Exports, Error Handling, Services and Data Access, Composition, Routing, and the construct patterns: Helpers and Singletons, Classes and Services, Factory Functions, Schemas and Constants, Backend Patterns, Hooks and Providers.
+- **Development** — Conventions (TypeScript Patterns, Naming, Imports and Exports, Error Handling), Using the stack (Services and Data Access, Forms and Validation, Composition, Routing), Building blocks (Helpers and Singletons, Classes and Services, Factory Functions, Schemas and Constants, Backend Patterns, Hooks and Providers), and Contributing (Creating Components, Styling System, Styling Components, Documentation).
 - **Styling** — Styling System, Tailwind Utilities, Theme Presets (as the task needs).
 
 Skim the Components and Blocks index so you know what exists; read individual component pages on demand during the task.
