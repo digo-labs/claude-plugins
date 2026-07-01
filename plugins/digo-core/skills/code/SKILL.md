@@ -46,6 +46,16 @@ From the fetched pages, note the conventions you must match:
 - **Error handling** — the `tryCatch` Result tuple; throw only for programmer error.
 - **The exact API** of every `@digo-labs/*` symbol you'll use, taken from its page's API Reference (props, methods, signatures).
 
+**Easy to miss — no linter catches these, so apply them deliberately:**
+
+- **Complete names** — spell concepts out (`MapCoordinates`, not `MapCoords`).
+- **Enums, not string unions** — a closed set of named string values in app code is an `enum`; `type` is only for unions of other types (shared-library primitives like `Orientation` may stay unions).
+- **No object shorthand** — `{ overrides: overrides }`, never `{ overrides }`.
+- **Parenthesized render returns** — `return ( <X/> )` on their own lines, even a single element (inline guard clauses may stay).
+- **No functions inside `useEffect`** — define them in the hook/component body and reference by name.
+- **`undefined` vs `null`** — the stack is null-first; use `| null` for runtime-nullable values, not `undefined`.
+- **Provider files** are `*-provider`, never `*-context`; **one main export per file**; global/feature state → a `signal` in `utils/signals.ts` or the feature folder.
+
 ## Step 4: Write the code
 
 Write it to match every pattern from Step 3. Read the target file only so you can edit it correctly — **do not** copy conventions from sibling local files; the docs define the conventions, and apps converge to the docs.
