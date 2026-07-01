@@ -28,7 +28,7 @@
     {
       "name": "digo-app",
       "source": "./plugins/digo-app",
-      "description": "Build & tear down apps on @digo-labs packages: create-digo-app, destroy-digo-app."
+      "description": "Build, sync & tear down apps on @digo-labs packages: create-digo-app, sync-digo-app, destroy-digo-app."
     }
   ]
 }
