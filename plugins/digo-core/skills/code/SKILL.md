@@ -21,7 +21,7 @@ The docs index is `https://design.digo-labs.com/llms.txt`. Fetch it if it isn't 
 
 From the index, select the pages relevant to the artifact and fetch their `.mdx`:
 
-- **Always** read the applicable Code Patterns pages: TypeScript Patterns, Imports and Exports, Error Handling.
+- **Always** read the core convention pages: TypeScript Patterns, Naming, Imports and Exports, Error Handling, and Project Structure.
 - Match the artifact to its specific pattern page (in the **Development** section):
   - helper / util / formatter / validator / small client → **Helpers and Singletons**
   - service or generic data/resource class → **Classes and Services**
@@ -29,6 +29,7 @@ From the index, select the pages relevant to the artifact and fetch their `.mdx`
   - Zod schema, shared types, a constant/route registry, an enum → **Schemas and Constants**
   - a backend route or service function → **Backend Patterns**
   - a custom hook or context provider → **Hooks and Providers**
+  - global or feature-shared reactive state (a `signal`, a store) → **Global State with Signals**
 - For a **component**: read the docs page of every `@digo-labs/ui` component or block you'll use (for its **API Reference** table), plus Composition and the Styling pages as needed. For a brand-new shared component, read Contributing → Creating Components and Styling Components.
 - For tables / auth / storage / AI / websockets / routing / forms: read that guide page.
 
