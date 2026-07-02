@@ -11,16 +11,11 @@ Build a working model of the Digo stack from the **design-system docs** — the 
 
 Fetch `https://design.digo-labs.com/llms.txt`. It lists every page grouped by section — Guide, Development, Skills, Components, Blocks, Utils, Effects — each with a one-line description and a raw-`.mdx` link.
 
-## Step 2: Read the foundational pages
+## Step 2: Read the docs
 
-Fetch and read these (in parallel where you can):
-
-- **Overview** — Introduction, Ecosystem Overview, Project Structure, Backend Architecture.
-- **Packages** — Common, UI, Services, App, WS.
-- **Development** — Conventions (TypeScript Patterns, Naming, Imports and Exports, Error Handling), Using the stack (Services and Data Access, Forms and Validation, Composition, Routing, Global State with Signals), Building blocks (Helpers and Singletons, Classes and Services, Factory Functions, Schemas and Constants, Backend Patterns, Hooks and Providers), and Contributing (Creating Components, Styling System, Styling Components, Documentation).
-- **Styling** — Styling System, Tailwind Utilities, Theme Presets (as the task needs).
-
-Skim the Components and Blocks index so you know what exists; read individual component pages on demand during the task.
+- **Guide** — read the overview and package pages (pick them from the index), plus any stack-area pages the upcoming work touches (styling, tables, auth, storage, deployment, …).
+- **Development** — read the **whole section, every page**. It defines every convention and authoring pattern.
+- **Components / Blocks / Utils / Effects** — skim their index entries so you know what exists; read individual pages on demand during the task.
 
 ## Step 3: Orient in the current app (optional)
 
@@ -31,7 +26,7 @@ To know what *this* app wires up — not to extract patterns — read its `packa
 Present a brief, scannable summary:
 
 1. **Packages** — what each provides and its role.
-2. **Component & authoring patterns** — how components, helpers, services, factories, schemas, hooks are built.
+2. **Component & authoring patterns** — how components, helpers, services, factories, schemas, hooks, and state are built.
 3. **Styling pipeline** — tokens → style files → `useStyles`/`cn` → component usage.
 4. **Services & data** — how services are wired and called, error handling.
 5. **Key conventions** — naming, structure, TypeScript, imports.

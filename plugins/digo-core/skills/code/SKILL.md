@@ -5,67 +5,33 @@ description: Write code that follows the Digo design-system patterns, sourced fr
 
 # Write Code: $ARGUMENTS
 
-Write code that follows the Digo patterns exactly as the **design-system docs** define them. The docs are the single source of truth: every Digo app follows the same documented patterns, so you reproduce the canonical pattern rather than mining the local codebase. This works from any repo — you never need the monorepo or `node_modules`.
+Write code that follows the Digo patterns exactly as the **design-system docs** define them. The docs are the single source of truth, and this skill carries no rules of its own — what the docs state is what you apply. Every Digo app follows the same documented patterns, so you reproduce the canonical pattern rather than mining the local codebase. This works from any repo — you never need the monorepo or `node_modules`.
 
 ## Step 1: Understand the request
 
 Parse from `$ARGUMENTS`:
 
-- **What kind** of artifact — component, page, hook, helper/util, service/class, factory (`define*`/`create*`), schema/constants, backend route/service, provider, config, type, test.
-- **Where it should live** — the file path in the current app (use the docs' Project Structure if unsure).
+- **What kind** of artifact — component, page, hook, helper, service, factory, schema, backend route, provider, state, config, type, test.
+- **Where it should live** — the file path in the current app.
 - **What it should do.**
 
-## Step 2: Load the docs
+## Step 2: Read the docs — everything first, then deep
 
 The docs index is `https://design.digo-labs.com/llms.txt`. Fetch it if it isn't already in the conversation. It lists every page with a one-line description and a raw-`.mdx` link.
 
-From the index, select the pages relevant to the artifact and fetch their `.mdx`:
+1. **Read the whole Development section — every page.** Those pages define every convention and authoring pattern, and all of them apply to all code. Do not skim for the parts that look relevant: a rule you didn't read is a rule you'll break.
+2. **Go deep from the index.** Using the one-line descriptions, fetch every page this task specifically touches: the Guide page for any stack area involved (tables, auth, storage, AI, websockets, deployment, …) and the docs page of every `@digo-labs/ui` component or block you'll use — its **API Reference** table is the only source for props, methods, and signatures.
 
-- **Always** read the core convention pages: TypeScript Patterns, Naming, Imports and Exports, Error Handling, and Project Structure.
-- Match the artifact to its specific pattern page (in the **Development** section):
-  - helper / util / formatter / validator / small client → **Helpers and Singletons**
-  - service or generic data/resource class → **Classes and Services**
-  - a `define*` / `create*` wiring function → **Factory Functions**
-  - Zod schema, shared types, a constant/route registry, an enum → **Schemas and Constants**
-  - a backend route or service function → **Backend Patterns**
-  - a custom hook or context provider → **Hooks and Providers**
-  - global or feature-shared reactive state (a `signal`, a store) → **Global State with Signals**
-- For a **component**: read the docs page of every `@digo-labs/ui` component or block you'll use (for its **API Reference** table), plus Composition and the Styling pages as needed. For a brand-new shared component, read Contributing → Creating Components and Styling Components.
-- For tables / auth / storage / AI / websockets / routing / forms: read that guide page.
+Do not proceed from memory. If it isn't in a page you fetched, you don't know it.
 
-Fetch every page you'll rely on. Do not proceed from memory.
+## Step 3: Write the code
 
-## Step 3: Extract the patterns and the API
+Apply **every** convention the docs state — not a subset you judge important. The docs decide; you follow.
 
-From the fetched pages, note the conventions you must match:
+- Read the target file only so you can edit it correctly — **do not** copy conventions from sibling local files; the docs define the conventions, and apps converge to the docs.
+- Use **only documented APIs**. If a prop, method, or pattern you need is not in the docs, do not invent it — flag it (the docs have a gap to patch with `/audit-docs`) and use the closest documented approach.
+- Register exports in the relevant barrel/index as the docs prescribe.
 
-- **Naming** — files, functions, variables, types; casing, prefixes, suffixes.
-- **The authoring shape** for this artifact — e.g. a helper is a static-method class (`class XHelpers { static … }`); a stateful one is the `init()`-guarded singleton; a factory returns a grouped typed object; a schema is paired with `z.infer`.
-- **TypeScript** — the `Properties` interface convention, generics, types vs interfaces.
-- **Imports/exports** — named exports, import grouping/ordering, barrel files.
-- **Error handling** — the `tryCatch` Result tuple; throw only for programmer error.
-- **The exact API** of every `@digo-labs/*` symbol you'll use, taken from its page's API Reference (props, methods, signatures).
-
-**Easy to miss — no linter catches these, so apply them deliberately:**
-
-- **Complete names** — spell concepts out (`MapCoordinates`, not `MapCoords`).
-- **Enums, not string unions** — a closed set of named string values in app code is an `enum`; `type` is only for unions of other types (shared-library primitives like `Orientation` may stay unions).
-- **No object shorthand** — `{ overrides: overrides }`, never `{ overrides }`.
-- **Parenthesized render returns** — `return ( <X/> )` on their own lines, even a single element (inline guard clauses may stay).
-- **No functions inside `useEffect`** — define them in the hook/component body and reference by name.
-- **`undefined` vs `null`** — the stack is null-first; use `| null` for runtime-nullable values, not `undefined`.
-- **Provider files** are `*-provider`, never `*-context`; **one main export per file**; global/feature state → a `signal` in `utils/signals.ts` or the feature folder.
-
-## Step 4: Write the code
-
-Write it to match every pattern from Step 3. Read the target file only so you can edit it correctly — **do not** copy conventions from sibling local files; the docs define the conventions, and apps converge to the docs.
-
-Rules:
-
-- Use **only documented APIs**. If a prop, method, or pattern you need is **not in the docs**, do not invent it — flag it (the docs have a gap to patch with `/audit-docs`) and use the closest documented approach.
-- Register exports in the relevant barrel/index per Imports and Exports.
-- Match the docs' formatting — alignment, trailing commas, spacing.
-
-## Step 5: Confirm
+## Step 4: Confirm
 
 Briefly note which doc pages you used, and call out any symbol you couldn't verify against the docs.
