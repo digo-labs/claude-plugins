@@ -19,7 +19,7 @@ The template owns `.template-sync.json`. Every file tracked in the template is m
 2. `merge` — partial merge. `package.json` → only the template's `scripts` and `overrides` keys (app `name` and app-added script keys preserved; **dependencies never touched** — that's `npm run update:digo-labs`).
 3. `reviewOnDrift` — app-owned, never overwritten, but a drift is reported as a manual-review note (`src/index.tsx`: every app rewrites its routes, but a change to the router *bootstrap* is worth surfacing).
 4. `scaffoldOnce` — seeded at app creation, **never re-synced** (`src/pages/**`, `src/db.ts`, `src/app.config.ts`, `src/overrides.ts`, `index.html`, `README.md`, `public/**`).
-5. `sync` — the infra/config that should track the template verbatim (`scripts/**`, `eslint.config.js`, `vite*.ts`, `tsconfig*.json`, `drizzle.config.ts`, `.gitignore`, `.vscode/**`, `certs/**`, `.env.development`, `.env.example`, `src/index.css`, `src/main.tsx`).
+5. `sync` — the infra/config that should track the template verbatim (`scripts/**`, `eslint.config.js`, `vite.config.ts`, `tsconfig*.json`, `.gitignore`, `.vscode/**`, `.env.development`, `.env.example`, `src/index.css`, `src/main.tsx`).
 
 A tracked template file matching **no** bucket is **unclassified** — report it so the manifest can be updated; never guess.
 
