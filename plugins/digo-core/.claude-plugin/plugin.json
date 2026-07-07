@@ -1,6 +1,6 @@
 {
   "name": "digo-core",
-  "description": "Coding in the digo monorepo: code, review, context.",
+  "description": "Coding in digo core and digo apps: code, code-in-core, review, context.",
   "author": {
     "name": "Digo Labs",
     "email": "digo@productionclub.net"

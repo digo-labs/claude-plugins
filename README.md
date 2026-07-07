@@ -12,7 +12,7 @@ Skills are split by audience and subsystem:
 | Plugin | Use it for | Skills |
 | --- | --- | --- |
 | **digo-base** | any repo, any project | `brainstorm`, `grill-me` |
-| **digo-core** | coding in the digo monorepo | `code`, `review`, `context` |
+| **digo-core** | coding in digo core and digo apps | `code`, `code-in-core`, `review`, `context` |
 | **digo-ui** | authoring the `@digo-labs/ui` library | `implement-component`, `create-preset` |
 | **digo-docs** | the design-system docs site | `implement-component-docs`, `audit-docs` |
 | **digo-app** | building apps on `@digo-labs/*` packages | `create-digo-app`, `destroy-digo-app` |

@@ -19,7 +19,7 @@ The user may pass the app name as an argument (e.g. `/create-digo-app cool-tool`
 
 Use `AskUserQuestion`. Validate before continuing.
 
-1. **App name** — required. Lowercase letters, digits, and hyphens; must match `^[a-z0-9][a-z0-9-]*[a-z0-9]$` (it has to be a valid npm name and a valid subdomain). No uppercase, underscores, spaces, or leading/trailing hyphen. Examples: `cool-tool`, `live-installation-2026`, `internal-portal`. This single value drives the Postgres schema, S3 bucket, websocket id, and Amplify app — see [Naming Your App](https://design.digo-labs.com/docs/guide/naming-your-app).
+1. **App name** — required. Lowercase letters, digits, and hyphens; must start with a letter and end with a letter or digit; must match `^[a-z][a-z0-9-]*[a-z0-9]$` (this is the exact regex `init-aws.sh` and `destroy.sh` enforce; it is also a valid npm name and a valid subdomain). No uppercase, underscores, spaces, or leading/trailing hyphen. Examples: `cool-tool`, `live-installation-2026`, `internal-portal`. This single value drives the Postgres schema, S3 bucket, websocket id, and Amplify app — see [Naming Your App](https://design.digo-labs.com/docs/guide/naming-your-app).
 2. **Parent directory** — where to create the new app folder. Default to the user's current working directory. Confirm the path before proceeding. Refuse to continue if `<parent>/<app-name>` already exists.
 3. **How to create the repo** — two paths:
    - **gh CLI** (recommended) — one command creates the repo from the template and clones it. Needs `gh auth status` to pass.
