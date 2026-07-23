@@ -1,99 +1,77 @@
 ---
 name: create-preset
-description: Generate a new theme preset from website/Figma URLs or a style brief. Extracts or derives colors, typography, shadows, radius, and per-component overrides, then applies and visually verifies the preset in the design-system app in both modes. Use when asked to create a preset, theme, or skin from a URL, mockup, or style description.
+description: Generate a professional theme preset from website/Figma URLs or a style brief. Derives colors, typography, shadows, radius, and extend-based per-component style overrides, then applies and visually verifies the preset — component by component and on a generated landing page — in both modes. Use when asked to create a preset, theme, or skin from a URL, mockup, or style description.
 ---
 
 # Create Theme Preset from: $ARGUMENTS
 
-## Step 1: Understand the Preset System
+Deliver a preset that is production-ready on the first review: every component checked, both modes verified, consistent by construction. Analyze the live source at each step — read the actual files, never code the preset system from memory.
 
-Read these files to understand the current state of the preset system:
+## Step 1: Learn the system from source
 
-- `packages/ui/src/presets/types.ts` — the `ThemePreset` interface and all related types
-- `packages/ui/src/presets/palettes.ts` — all available palette names and their hex values
-- `packages/ui/src/presets/helpers.ts` — how preset values become CSS vars (`--color-{role}-{n}`, `--typo-*`, `--radius`, `--shadow-*`)
-- `packages/ui/src/providers/design-system-provider.tsx` — how overrides merge
-- `packages/ui/src/presets/curated/` — every existing preset, to match code style exactly
-- `packages/common/src/index.css` — `@font-face` families (any family name is usable, not just ones with a `--font-*` var), `--typo-*` defaults, `--radius-*` derivation, and the `cs-*` utilities (`cs-backdrop-panel`, `cs-focus`, `cs-popup-animation`)
-- `packages/ui/src/styles/index.ts` — all component style names (the valid `overrides` keys)
+Read, in this order:
 
-Facts that will save you from bugs — verify they still hold, then rely on them:
+- `packages/ui/src/presets/types.ts`, `helpers.ts`, `palettes.ts` — the `ThemePreset` shape, how fields become CSS vars, the palette catalog with hex values.
+- `packages/ui/src/providers/design-system-provider.tsx` — how overrides merge into `baseStyles`.
+- Every file in `packages/ui/src/presets/curated/` — current presets are the style guide for your file.
+- `packages/common/src/index.css` — `@font-face` catalog (any family name is usable in `typography`), `--typo-*`/`--radius-*` derivations, and the `cs-*` utilities components lean on.
+- `packages/ui/src/styles/index.ts` — the component style names; these are the valid `overrides` keys.
 
-- **Overrides are full replacements.** The provider does `{ ...baseStyles, ...presetOverrides, ...appOverrides }` — a shallow merge per component key. An override replaces the component's ENTIRE `styles()` object, so always copy the base style file's full definition and modify it; never write a partial.
-- **Mechanics**: in the preset file `import { defineOverrides, styles } from 'src/utils/styles';` and set `overrides: defineOverrides({ <barrelExportName>: <yourStyles> })`. Keys must match the export names in `styles/index.ts` (`inputGroup`, `numberField`, `navigationMenu`, …).
-- **Typography voices compose with sizes**: `typo-label` / `typo-header` / `typo-code` win over the `typo-N` size utilities (base styles rely on it: `'typo-2 typo-label'`). Use this to give labels/headers a distinct font at any size. `text-transform` is NOT part of the typo system — add `uppercase` per component if the style calls for it.
-- **Radius cascades**: preset `radius` drives ALL `rounded-*` utilities multiplicatively (`--radius-sm` etc. are `calc()` of `--radius`). `radius: '0rem'` zeroes everything except `rounded-full`. Per-component exceptions use explicit `rounded-none` / `rounded-full`.
-- **Font families**: `typography.font` takes the raw `@font-face` family name from `index.css` — all ~55 families work, including ones without a `--font-*` var.
+Load-bearing mechanics (verify they still hold before relying on them):
 
-## Step 2: Gather the Design Reference
+- **Override with `extend`, never with full copies.** The provider swaps whole per-component style objects, so a copied definition freezes the base and silently drops future base edits. Instead: `styles({ extend: baseStyles.button, slots: {...}, variants: {...} })` with ONLY the aesthetic delta classes — base structure, layout, and behavior keep flowing through, and `tailwind-merge` resolves your utilities against the base's per group. Register with `defineOverrides({ key: value })` using the exact export names from `styles/index.ts`.
+- Extend-delta rules of thumb: replace within the same utility group (`bg-*` → `bg-transparent`, `shadow-*` → `shadow-none`); switching border style needs the explicit pair (`border-solid` to beat a base `border-dashed`); custom `cs-*` utilities can't be twMerge-removed, but appended standard utilities beat their `@apply`-ed declarations in the cascade — verify each such collision with computed styles in the browser. TypeScript quirk: extension `variants` may only reference slots declared in the extension — declare untouched slots as `''` when a variant needs them.
+- `typo-label` / `typo-header` / `typo-code` win over `typo-N` size utilities, so voice + size compose (`typo-2 typo-label`). `uppercase` is not part of the typo system — add it per component.
+- Preset `radius` scales every `rounded-*` token; `0rem` zeroes all except `rounded-full`. Escape per component with explicit `rounded-none` / `rounded-full`.
 
-### Website URLs
-1. `WebFetch` each URL in `$ARGUMENTS`; extract colors, typography, shadows, radius, spacing from the HTML/CSS.
-2. **Auto-explore**: follow 2-3 internal links for a broader picture; extract from each.
-3. **Screenshot** each page for visual cross-reference (shadows, spacing, overall feel).
+## Step 2: Gather the design reference
 
-### Figma URLs
-1. Parse `fileKey` / `nodeId`, use `get_design_context` for tokens and `get_screenshot` for reference. Skip auto-explore.
+- **Website URLs**: `WebFetch` each; extract colors, type, shadows, radius, spacing. Follow 2-3 internal links for breadth; screenshot for visual feel.
+- **Figma URLs**: parse `fileKey`/`nodeId`, use `get_design_context` + `get_screenshot`.
+- **Style brief** (no URL — a description, mockup, or conversation reference): derive the language from the brief; expect to grill more in Step 3.
 
-### Style brief (no URLs)
-The arguments may instead describe a style ("that mockup", "warm brutalism", a conversation reference). Derive the design language from the brief and the conversation, then go to Step 3's grill — more decisions are open, so more questions are warranted.
+## Step 3: Grill open decisions
 
-## Step 3: Grill Before Building
+When real choices remain (always for briefs), ask 1-2 rounds of `AskUserQuestion` popups — max 4 questions, first option marked "(Recommended)", descriptions citing actual palette hexes and font names from Step 1. Cover: preset name, neutral, accent, typography voices, shadow character, radius. If the user answers "you decide", stop asking and own the rest. Skip the grill entirely for an unambiguous extraction.
 
-If the reference leaves real choices open (always for briefs, rarely for a clean URL extraction), ask with `AskUserQuestion` popups before writing any file — 1-2 rounds, max 4 questions each, always mark a "(Recommended)" first option:
+## Step 4: Write the design-language contract
 
-- preset name; neutral palette; accent palette (show actual hex evidence from `palettes.ts` in the descriptions)
-- header/body/label fonts (name real catalog families); shadow character (flat / soft / hard-offset); radius
-- If the user answers "you decide" / "do your thing", stop asking and own the remaining choices.
+Before any override, write down (in the plan, not the code):
 
-Skip entirely when the extraction is unambiguous — do not interrogate a user who gave you a pixel-perfect reference.
+- **Border tiers** — name 2-3 neutral steps and what each means (e.g. ink `12` = standalone structure: cards, popups, primary controls; mid `8` = form controls and fused/secondary chrome: collapsibles, tabs rows, code blocks, chips, media frames). Components nested or fused inside another surface take their HOST's tier — when a pairing looks off, lighten the nested piece toward the host, don't darken siblings.
+- **One interaction treatment** — a single hover/pressed/selected recipe reused everywhere.
+- **Mode-safe pairings** — palette-step classes flip with mode. `neutral-12`-on-`neutral-1` pairs are always safe (they flip together). Text on solid role fills must be fixed: `text-black` on bright solids (lime, yellow, amber, mint, sky), `text-white` on dark solids (tomato, red, green, blue, violet). When unsure, compute WCAG contrast against the palette's dark-ramp hex.
+- **Signature moves** — the few recurring motifs (uppercase mono labels, hairline rules, one pill shape…) each component applies or deliberately skips.
 
-## Step 4: Define the Design Language Contract
+## Step 5: Generate
 
-Before writing overrides, write down (in your plan, not the code) a small contract and apply it uniformly — inconsistency between sibling components is the most common review complaint:
+- **Colors**: map the 6 roles; match role solids against palette step 9, backgrounds against steps 2-3.
+- **Every `ThemePreset` field**: copy the default preset's value wherever the reference doesn't clearly differ.
+- **Overrides**: sweep ALL of `styles/` in batches, reading each base file right before writing its delta. Override only components whose look must change; keep each delta minimal so the base keeps showing through. Skip empty pass-through styles (many `parameter-*` files).
+- **Files**: `presets/curated/{name}.ts` (kebab-case, `{name}Preset` export, existing code style, zero comments) + export in `curated/index.ts`.
 
-- **Border tiers**: which neutral step means structural frame, which means control border, which means hover/active. Every component picks from these tiers — components that appear nested or fused (code block inside a collapsible, chips inside combobox, fields inside groups) MUST use the same tier as their host.
-- **Interaction states**: one hover/pressed/selected treatment reused everywhere (e.g. invert to `bg-neutral-12 text-neutral-1`).
-- **Mode-safe color pairings** — the #1 source of dark-mode bugs. Palette-step classes flip with mode, so a pair that reads well in light can invert to unreadable in dark:
-  - `neutral-12` on `neutral-1` (and vice versa) is always safe — they flip together.
-  - Text on a **solid step-9/10 role fill** must NOT be a palette step. Use fixed `text-black` on bright solids (lime, yellow, amber, mint, sky) and fixed `text-white` on dark solids (tomato, crimson, red, green, blue, violet…) — same rule Radix uses for its solid-step contrast color.
-  - When in doubt, compute: WCAG contrast of the palette's `dark`-ramp step 9 hex against the intended text color.
-- **Signature moves**: 2-4 recurring motifs (uppercase mono labels, hairline rules, pill CTAs…) listed explicitly, so every component either applies them or deliberately opts out.
+## Step 6: Generate the preset landing page
 
-## Step 5: Generate the Preset
+Create a permanent, self-applying showcase at `/presets/{name}` in `apps/design-system`:
 
-### Colors
-Map to the 6 roles (`neutral`, `accent`, `error`, `success`, `warning`, `info`). For role solids compare against palette step 9; for a specific background/paper tone also compare steps 2-3 — the neutral choice is usually decided by the background, not the solid.
+- Add `app/presets/{name}-landing.tsx`: a full landing page in the preset's voice — hero with display type and the accent CTA, a ruled stats band, feature cards, a real form (inputs, select, textarea, checkbox, switch), a data section (chart, progress, slider), a chat thread, alerts, footer. Compose only `@digo-labs/ui` components; write copy that fits the aesthetic. Mimic the structure of an existing `*-landing.tsx` if one exists; otherwise pattern from `app/pages` + `app/examples` (verify every component API against an example or its source).
+- The page applies its own preset: `useDesignSystem().setPreset({name}Preset)` in a mount effect — it renders correctly no matter the app default.
+- Root element needs its own scroll: the app shell is a fixed viewport, so use `h-dvh overflow-y-auto`. The docs app nowraps bare `h1`s — add `whitespace-normal text-balance` to hero headlines.
+- Register the shared route once if missing (`/presets/:slug` lazy-loading `../presets/${slug}-landing.tsx`, patterned on ViewPage) and add `presets` to `PATHS`.
 
-### Populate every field
-`ThemePreset` requires every field except `custom` and `overrides`. When an extracted value would be practically identical to the default preset's, copy the default rather than inventing a variation. Typography (font/weight/tracking/leading per role), shadows (5 steps; `blur: 0` gives hard print-offset shadows, `opacity: 0` disables a step), radius, `spacingFactor`, `typographyScaleFactor`.
+## Step 7: Verify in the browser
 
-### Component overrides — sweep everything
-Work in batches so context stays manageable, reading each batch's base files right before overriding them:
+Use `preview_start` with the `design-system` config. Verify, fix, and re-check until clean — never hand over unseen work:
 
-1. form/input primitives  2. containers + navigation  3. pickers/media/data  4. `parameter-*` (mostly empty pass-throughs — override only the few with real classes)  5. blocks (login-card, chat-thread, prompt-input, user-*)
+1. `/presets/{name}` — the landing is the fastest whole-style read and self-applies the preset.
+2. `/playground` — near-every component in real DOM; drive its inner scroll container via `javascript_tool`. For popups (menus, selects, tooltips) check computed styles or use real navbar/panel surfaces — docs example iframes are scaled and swallow clicks.
+3. A docs component page — checks the preset against docs chrome (preview frame + collapsible + code block border stack).
+4. Both modes (mode toggle, or set the `mode` localStorage key and reload) — re-check solid fills, hover/selected states, popups.
+5. Consistency audit against the Step 4 contract: fused surfaces on one tier, one interaction recipe, no palette-step text on solid fills.
+6. Screenshots after animations settle (pages stagger-fade; a blank shot right after navigation is usually mid-animation — wait 2-3s and re-shoot). If a style refuses to apply, check for hardcoded inline styles in the component source and report them as source-level gaps rather than fighting them.
 
-For each component: copy the base definition, apply the contract from Step 4, keep every behavioral class (the `data-*`, `has-*`, animation, and layout plumbing) untouched — restyle only colors, borders, radius, typography, shadows, paddings. Only register components whose result differs from base. Replace `cs-backdrop-panel` inline (with your popup surface treatment) when the style calls for opaque popups.
+## Step 8: Finish
 
-### Create files
-1. `packages/ui/src/presets/curated/{name}.ts` — kebab-case file, `{name}Preset` camelCase export; match existing preset code style exactly (colon alignment, quotes). Zero comments.
-2. Add the export to `packages/ui/src/presets/curated/index.ts` — `PRESETS` auto-collects it.
-
-## Step 6: Apply and Verify in the Browser
-
-Never declare the preset done without seeing it. Use the design-system app (`preview_start` with the `design-system` launch config):
-
-1. **Activate**: open the theme panel (navbar icon) and pick the new preset in the preset picker — no source change needed. Runtime selection resets on full page reloads, so navigate between pages via in-app links. (Alternative when you need many full reloads: temporarily set the preset in `apps/design-system/src/app.config.ts` — and ALWAYS restore it before finishing.)
-2. **Sweep visually**: `/playground` renders nearly every component in real DOM — screenshot section by section (its scroll lives in an inner container; drive it with `scrollIntoView` via `javascript_tool`). Docs pages (`/library/components/<slug>`) render examples in **scaled iframes: clicks there don't reach popups** — verify popup styling via real surfaces (navbar dropdowns, theme panel, playground) instead.
-3. **Wait out animations**: pages stagger-fade in; a "blank" screenshot right after navigation is usually mid-animation. Wait 2-3s and re-shoot before diagnosing.
-4. **Both modes**: toggle dark mode (navbar toggle, or set the `mode` key in localStorage and reload) and re-check at least: solid fills, hover/selected states, popups, and one docs page.
-5. **Consistency audit**: docs component pages stack preview frame + "show more" collapsible + code block — border tiers must match there; also check chips-in-combobox, fields-in-groups, toasts vs alerts.
-6. Fix, let HMR reload, re-verify. Iterate until clean.
-
-If a visual constant resists the preset (computed style ≠ your classes), check for **hardcoded inline styles** in the component source (e.g. an effect setting `borderRadius` via JS). Presets cannot reach those — report them to the user as source-level gaps instead of fighting them.
-
-## Step 7: Finish
-
-1. `npx eslint --fix packages/ui/src/presets/curated/{name}.ts` (fixes the repo's colon-alignment style), then confirm clean.
-2. `npx tsc --noEmit` in `packages/ui`.
-3. Do not run builds. Do not commit. Summarize: choices made, components overridden, verified surfaces/modes, and any source-level gaps found.
+1. `npx eslint --fix` on every file you created, then confirm clean.
+2. `npx tsc --noEmit` in `packages/ui` and `apps/design-system` (ignore pre-existing failures you didn't cause — but say so).
+3. No builds, no commits. Summarize: contract, components overridden, verified surfaces and modes, gaps found, and the `/presets/{name}` URL.
