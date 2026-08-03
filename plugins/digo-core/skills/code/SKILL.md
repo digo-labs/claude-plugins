@@ -30,6 +30,7 @@ Apply **every** convention the docs state — not a subset you judge important. 
 
 - Read the target file only so you can edit it correctly — **do not** copy conventions from sibling local files; the docs define the conventions, and apps converge to the docs.
 - Use **only documented APIs**. If a prop, method, or pattern you need is not in the docs, do not invent it — flag it (the docs have a gap to patch with `/audit-docs`) and use the closest documented approach.
+- If the UI calls for a **base primitive** that `@digo-labs/ui` doesn't ship — the kind foundational libraries (shadcn/ui, Base UI, CossUI) include: form controls, overlays, menus, disclosure, feedback — do **not** hand-roll it in the app. Base primitives are implemented in the core monorepo (`/implement-component`) and consumed from the package. Stop and surface the gap to the user (popup): implement it in core first, or — only if they explicitly choose it — build a clearly-marked temporary local stand-in. App-specific composites (cards, sections, dashboards) are yours to build; primitives are not.
 - Register exports in the relevant barrel/index as the docs prescribe.
 
 ## Step 4: Confirm

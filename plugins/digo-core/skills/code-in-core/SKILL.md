@@ -50,6 +50,7 @@ Write code that matches **every pattern** you identified. It must be indistingui
 
 - NEVER fall back to generic or "best practice" defaults — always match what exists in the source.
 - Prefer the monorepo's existing abstractions and utilities over introducing new ones.
+- If the work needs a **base UI primitive** that `packages/ui` doesn't ship — the kind foundational libraries (shadcn/ui, Base UI, CossUI) include: form controls, overlays, menus, disclosure, feedback — do not inline a substitute. Ask (popup) to implement it first with `/implement-component`, then continue on top of it.
 - Use only APIs you verified exist in the source. If the codebase has no similar code, widen the search to adjacent packages.
 - Match formatting exactly — indentation, spacing, line breaks, trailing commas.
 - Briefly note which files you patterned from, and flag anything you introduced with no existing precedent (and, if the docs describe it differently than the code now does, a docs gap worth `/audit-docs`).
