@@ -29,11 +29,6 @@
       "name": "digo-app",
       "source": "./plugins/digo-app",
       "description": "Build, sync & tear down apps on @digo-labs packages: create-digo-app, sync-digo-app, destroy-digo-app."
-    },
-    {
-      "name": "mattpocock-skills",
-      "source": { "source": "github", "repo": "mattpocock/skills" },
-      "description": "Third-party (MIT, Matt Pocock): wayfinder, grilling, domain-modeling, research, prototype, tdd, code-review and more. Re-exported, not vendored — installed as a dependency of digo-base."
     }
   ]
 }
