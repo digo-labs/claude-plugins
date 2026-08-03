@@ -42,7 +42,14 @@ root, mkt, clone, full, short, ts = sys.argv[1:7]
 
 # plugins declared in the marketplace manifest
 manifest = json.load(open(os.path.join(clone, ".claude-plugin", "marketplace.json")))
-plugins = {p["name"]: p.get("source", f"./plugins/{p['name']}") for p in manifest["plugins"]}
+declared = {p["name"]: p.get("source", f"./plugins/{p['name']}") for p in manifest["plugins"]}
+
+# only plugins living in this repo can be rebuilt from the clone; entries with an
+# object source (github/git/npm) are fetched by Claude Code from their own remote,
+# so leave their cache and install records alone
+plugins = {n: s for n, s in declared.items() if isinstance(s, str)}
+for name in declared.keys() - plugins.keys():
+    print(f"  skipping {name} (external source — Claude Code fetches it)")
 
 # rebuild each plugin's cache dir from the freshly-pulled clone
 for name, src in plugins.items():
