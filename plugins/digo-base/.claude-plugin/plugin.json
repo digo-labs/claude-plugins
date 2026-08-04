@@ -1,6 +1,6 @@
 {
   "name": "digo-base",
-  "description": "Portable, repo-agnostic skills: brainstorm, grill-me, build-idea (idea → working code).",
+  "description": "Portable, repo-agnostic skills: brainstorm, grill-me, build-idea (idea → working code), assistant (docs Q&A).",
   "author": {
     "name": "Digo Labs",
     "email": "digo@productionclub.net"
