@@ -7,6 +7,8 @@ description: Review changed code against the Digo design-system patterns and com
 
 Review the changed code against the Digo patterns — sourced from the **design-system docs**, the single source of truth. This skill carries no rules of its own: **every convention the docs state is in scope**, and deviations are measured against the docs, not the local codebase or your own taste. This works from any repo — you never need the monorepo or `node_modules`.
 
+**Core-monorepo guard.** Inside the digo core monorepo the relationship inverts: the source is the truth and the docs can lag it. Never "fix" `packages/*` or monorepo app source toward the published docs. If invoked there, say so, report doc/source mismatches as gaps for `/audit-docs`, and review the diff against its sibling files' patterns instead (the `code-in-core` standard).
+
 ## Step 1: Collect changed files
 
 Run `git diff --name-only` and `git ls-files --others --exclude-standard`. Filter to code files (`.ts`, `.tsx`, `.css`); skip deleted files. If `$ARGUMENTS` gives focus (e.g. "focus on pages"), prioritize it but still review every changed file.
