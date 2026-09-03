@@ -1,11 +1,11 @@
 ---
 name: release-audit
-description: Audit the core monorepo's npm packages — what changed since each package's last publish, which need releasing and at what version — then, on confirmation, run the full changesets release and offer to bump the downstream apps that consume @digo-labs packages. Use when the user asks what packages need updating/publishing, whether npm is stale, wants to release packages, or invokes `/release-audit`.
+description: Audit the core monorepo's npm packages — what changed since each package's last publish, which need releasing and at what version — then guide the user through `npm run release` and offer to bump the downstream apps that consume @digo-labs packages. Use when the user asks what packages need updating/publishing, whether npm is stale, wants to release packages, or invokes `/release-audit`.
 ---
 
 # Release Audit
 
-Audits every publishable package in the core monorepo against its last published state, proposes version bumps, and — behind a single confirmation gate — writes changesets and runs the release. Afterwards (or when nothing needs publishing) it reports which sibling apps in `~/digo-labs` are behind on `@digo-labs/*` deps and offers to bump the ones the user picks.
+Audits every publishable package in the core monorepo against its last published state, proposes version bumps, and — behind a single confirmation gate — hands the user a precise cheat-sheet for running `npm run release` themselves (their npm 2FA makes the publish theirs). Afterwards (or when nothing needs publishing) it reports which sibling apps in `~/digo-labs` are behind on `@digo-labs/*` deps and offers to bump the ones the user picks.
 
 **Git rules, non-negotiable:** the skill never commits and never pushes — not in core, not in any downstream app. Every run ends with the working tree changed (or untouched) and a list of what the user should review and commit themselves.
 
@@ -45,7 +45,7 @@ Flag a package as **risky** when the diff shows any of:
 
 Risky packages get called out in the gate with a patch-vs-minor choice; never silently ship a suspected breaking change as patch.
 
-**Internal cascade:** `.changeset/config.json` has `updateInternalDependencies: patch`, so `changeset version` auto-patches dependents (common → ui/services/app/docs, etc.). Do **not** write changesets for cascade-only packages — just list the cascade in the report so the user knows those will bump and republish too.
+**Internal cascade:** internal `@digo-labs/*` ranges use `^`, so a patch/minor of a dependency still satisfies dependents' ranges — `changeset version` correctly bumps **nothing** beyond the packages with changesets, and consumers pick up the new dependency transitively at install. Only a major (or a range that stops satisfying) triggers dependent republishes via `updateInternalDependencies: patch`. Don't predict republish cascades for patch releases; note transitive pickup in the report instead.
 
 ### Report
 
@@ -55,31 +55,23 @@ Present one terse table: package · local vs published version · proposed bump 
 
 One `AskUserQuestion` popup, recommended option first:
 
-- **Release as proposed (Recommended)** — proceed with the bumps shown.
+- **Proceed with this plan (Recommended)** — continue to the guided release.
 - Per-risky-package patch/minor choices (as extra questions in the same popup, only when risky flags exist).
-- **Report only** — stop here, touch nothing; continue to Phase 4.
+- **Report only** — stop here; continue to Phase 4.
 
-Before publishing, verify npm auth with `npm whoami` (packages publish with restricted access). If not authenticated, stop and tell the user to `npm login` — don't attempt workarounds.
+## Phase 3 — Guided release (the user runs it)
 
-## Phase 3 — Release (only after confirmation)
+The user publishes themselves — their npm account requires a 2FA code per publish, and only their interactive terminal can answer that prompt. The skill never writes changesets, never bumps versions, never publishes.
 
-1. Write one changeset file per directly-changed package in `.changeset/` (kebab-case filename, e.g. `release-audit-<date>.md` or one file covering all packages):
+After the gate, print a short release brief the user follows in their own terminal:
 
-   ```markdown
-   ---
-   "@digo-labs/ui": patch
-   "@digo-labs/common": patch
-   ---
+1. The command: `cd ~/digo-labs/core && npm run release`.
+2. Changeset prompt cheat-sheet — exactly which packages to select with space+enter, the major/minor answers (normally: none/none → everything patch), and a ready-to-paste summary line derived from the audit.
+3. Remind them the publish step asks for the authenticator code in the terminal.
 
-   <one-line summary of the release>
-   ```
+Then **wait** for the user to say the release ran. When they do, verify with `npm view <name> version` that every proposed package now shows the expected version; report any mismatch. Remind the user the version bumps + consumed changeset are uncommitted — reviewing and committing them is theirs.
 
-2. `npx changeset version` — bumps versions and cascades internal dependents.
-3. `npm run build:packages`.
-4. `npx changeset publish`.
-5. If any step fails, stop, report the failure verbatim, and leave the tree as-is for the user to inspect.
-
-End of phase: list the files changed by the release (package.json versions, lockfile, consumed changesets) so the user can review, commit, and push.
+If the release brief was delivered but the user declines to run it now, skip verification and continue to Phase 4 with the currently-published versions.
 
 ## Phase 4 — Downstream apps (always runs, even on a no-op audit)
 
