@@ -29,6 +29,11 @@
       "name": "digo-app",
       "source": "./plugins/digo-app",
       "description": "App lifecycle on @digo-labs packages: create-digo-app, sync-digo-app, secure-digo-app, destroy-digo-app."
+    },
+    {
+      "name": "digo-media",
+      "source": "./plugins/digo-media",
+      "description": "Generative media on Replicate with the shared team token: create-media, replicate."
     }
   ]
 }

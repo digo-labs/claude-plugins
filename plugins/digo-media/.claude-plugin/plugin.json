@@ -1,0 +1,8 @@
+{
+  "name": "digo-media",
+  "description": "Generative media on Replicate with the shared team token: create-media (brief → numbered results → artifact → iterate by number), replicate (run any model).",
+  "author": {
+    "name": "Digo Labs",
+    "email": "digo@productionclub.net"
+  }
+}
