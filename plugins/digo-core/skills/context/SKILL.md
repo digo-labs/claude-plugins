@@ -1,6 +1,6 @@
 ---
 name: context
-description: Build context on the Digo stack from the design-system docs (llms.txt) — scoped to the task at hand by default, full immersion on request. Use before starting new features or when you need the right picture of the stack. Works in any repo.
+description: For core work — build context on the Digo stack from the design-system docs (llms.txt), scoped to the task at hand by default, full immersion on request. Use in the core monorepo or when working on the core packages, the backend or the design system, before starting new features there. Not for app repos — there, the code skill and the app's own code give the context.
 ---
 
 # Build Digo Context: $ARGUMENTS

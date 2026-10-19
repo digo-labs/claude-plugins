@@ -1,6 +1,6 @@
 ---
 name: assistant
-description: Answer questions about the Digo stack from the design-system docs (llms.txt) — how something works, which component or service fits, where a thing is documented. Use when the user asks a question about digo packages, components, patterns, or services. Not for build requests — writing code goes through the code skills.
+description: For core work. Answer questions about the Digo stack from the design-system docs (llms.txt) — how something works, which component or service fits, where a thing is documented. Use in the core monorepo or when working on the core packages, the backend or the design system and the user asks about digo packages, components, patterns, or services. Not for build requests — writing code goes through the code skills.
 ---
 
 # Digo Assistant: $ARGUMENTS
