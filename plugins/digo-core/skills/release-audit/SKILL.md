@@ -5,11 +5,11 @@ description: Audit the core monorepo's npm packages — what changed since each 
 
 # Release Audit
 
-Audits every publishable package in the core monorepo against its last published state, proposes version bumps, and — behind a single confirmation gate — hands the user a precise cheat-sheet for running `npm run release` themselves (their npm 2FA makes the publish theirs). Afterwards (or when nothing needs publishing) it reports which sibling apps in `~/digo-labs` are behind on `@digo-labs/*` deps and offers to bump the ones the user picks.
+Audits every publishable package in the core monorepo against its last published state, proposes version bumps, and — behind a single confirmation gate — hands the user a precise cheat-sheet for running `npm run release` themselves (their npm 2FA makes the publish theirs). Afterwards (or when nothing needs publishing) it reports which sibling apps in `~/work/digo` are behind on `@digo-labs/*` deps and offers to bump the ones the user picks.
 
 **Git rules, non-negotiable:** the skill never commits and never pushes — not in core, not in any downstream app. Every run ends with the working tree changed (or untouched) and a list of what the user should review and commit themselves.
 
-Runs from the core monorepo root (`~/digo-labs/core`). If invoked elsewhere, operate on that path anyway.
+Runs from the core monorepo root (`~/work/digo/core`). If invoked elsewhere, operate on that path anyway.
 
 ## Phase 1 — Audit
 
@@ -65,7 +65,7 @@ The user publishes themselves — their npm account requires a 2FA code per publ
 
 After the gate, print a short release brief the user follows in their own terminal:
 
-1. The command: `cd ~/digo-labs/core && npm run release`.
+1. The command: `cd ~/work/digo/core && npm run release`.
 2. Changeset prompt cheat-sheet — exactly which packages to select with space+enter, the major/minor answers (normally: none/none → everything patch), and a ready-to-paste summary line derived from the audit.
 3. Remind them the publish step asks for the authenticator code in the terminal.
 
@@ -77,7 +77,7 @@ If the release brief was delivered but the user declines to run it now, skip ver
 
 ### Scan
 
-Every sibling `~/digo-labs/*/package.json` (excluding `core` and `claude-plugins`) that lists `@digo-labs/*` in dependencies or devDependencies. For each, compare every `@digo-labs/*` range against the latest published version (post-release if Phase 3 ran). Report a table: project · outdated packages (have → latest).
+Every sibling `~/work/digo/*/package.json` (excluding `core` and `claude-plugins`) that lists `@digo-labs/*` in dependencies or devDependencies. For each, compare every `@digo-labs/*` range against the latest published version (post-release if Phase 3 ran). Report a table: project · outdated packages (have → latest).
 
 ### Bump
 
