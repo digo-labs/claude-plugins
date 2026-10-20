@@ -10,8 +10,8 @@ Code that goes into the core monorepo (root `package.json` named `@digo-labs/ind
 ## Where the truth is
 
 For any `@digo-labs/*` API you haven't seen used in this app: **installed types > package guide > site**. Read its
-types in `node_modules/@digo-labs/<package>/`, then the guide shipped in that package when it has a real one (today
-most READMEs are stubs that point to the site: skip those), and only then one page of https://design.digo-labs.com
+types in `node_modules/@digo-labs/<package>/`, then the guide shipped in that package (its `README.md`; skip it if the installed
+version is still a stub that only points to the site), and only then one page of https://design.digo-labs.com
 (start from `llms.txt`). The installed
 version is what the app runs; when sources disagree, the earlier one wins. The same goes for outside libraries:
 their installed types or their own docs, never memory.
