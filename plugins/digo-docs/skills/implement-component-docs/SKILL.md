@@ -40,7 +40,7 @@ Read, in full:
 
 - Load the new page in the browser (design-system dev server): every preview renders, console clean of errors the page causes.
 - Both modes: examples read correctly in light AND dark.
-- Confirm the page appears in the nav and in `/llms.txt` — both derive from docs.config + frontmatter, so absence means a frontmatter typo.
+- Confirm the page appears in the nav, in `/llms-full.txt` and in its topic file (`/llms-components.txt` for components) — all derive from docs.config + frontmatter, so absence means a frontmatter typo.
 
 ## Step 5: Finish
 
