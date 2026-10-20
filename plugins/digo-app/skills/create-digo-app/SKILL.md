@@ -13,7 +13,6 @@ This file is orchestration only. **The docs are the source of truth for every fa
 
 Before anything else, `WebFetch`:
 
-- `https://design.digo-labs.com/llms.txt` — the index of every guide page; keep it as context for the whole session.
 - [Creating a New App](https://design.digo-labs.com/docs/guide/creating-a-new-app) — the walkthrough this skill automates; its Steps section holds the exact commands.
 - [Naming Your App](https://design.digo-labs.com/docs/guide/naming-your-app) — the naming rule and everything the name drives.
 - [Deploying to AWS](https://design.digo-labs.com/docs/guide/deploying-to-aws) — what `init-aws` sets up; only needed when AWS setup is on the table.
@@ -88,4 +87,4 @@ Troubleshooting lives in the guides, not here: **Common failures** on [Creating 
 
 ## After the skill completes
 
-Stay available for follow-up. Any code the user asks for in the new app — tables in `src/db.ts`, pages, components, services — goes through the `/code` skill. For questions, fetch the relevant guide from `llms.txt` and answer from it. Tearing an app back down is the separate [`/destroy-digo-app`](https://design.digo-labs.com/docs/skills/skill-destroy-digo-app) skill.
+Stay available for follow-up. Any code the user asks for in the new app — tables in `src/db.ts`, pages, components, services — goes through the `/code` skill. For questions about the platform, read the installed types, then the package's guide, then the one docs page that covers it. Tearing an app back down is the separate [`/destroy-digo-app`](https://design.digo-labs.com/docs/skills/skill-destroy-digo-app) skill.

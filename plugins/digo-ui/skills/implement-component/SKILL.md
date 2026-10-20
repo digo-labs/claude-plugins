@@ -35,7 +35,7 @@ Run the `code-in-core` skill for the writing itself — it mines the closest sib
 
 ## Step 4: Document
 
-Run the `implement-component-docs` skill. This is not optional polish: apps build through the `code` skill from the published docs (llms.txt), so an undocumented component does not exist outside the monorepo. The docs page also becomes the verification surface for Step 5.
+Run the `implement-component-docs` skill. This is not optional polish: apps reach a component through its installed types and the docs site, so an undocumented component is invisible outside the monorepo. The docs page also becomes the verification surface for Step 5.
 
 ## Step 5: Preset Coverage
 

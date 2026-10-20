@@ -64,4 +64,4 @@ sibling skill with the Skill tool (`digo-media:replicate`) and locate bundled sc
 `${CLAUDE_SKILL_DIR}` (its own, or a sibling's inside the same plugin).
 
 `digo-media` needs the AWS CLI and an SSO login: the Replicate token is read from SSM
-Parameter Store at run time (see `plugins/digo-media/skills/replicate/references/replicate-setup.md`).
+Parameter Store at run time (see `plugins/digo-media/skills/replicate/references/setup.md`).
