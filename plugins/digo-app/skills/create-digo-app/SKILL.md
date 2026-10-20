@@ -44,6 +44,8 @@ Run the commands from the guide's **"Create the repo from the template"** step f
 
 Follow [Naming Your App](https://design.digo-labs.com/docs/guide/naming-your-app): the real name goes in **one** place — `"name"` in `package.json`. `src/app.config.ts` and `src/db.ts` derive from it; you do **not** edit them. Optional: the `<title>` in `index.html`, the one deliberately-manual label (capitals and spaces allowed). Confirm `package.json` was updated before continuing.
 
+Then make `CLAUDE.md` the app's own: its title and first paragraph name this app and say what it is (ask in one line if you don't know yet), the template's «Template-owned vs app-owned» section goes, and the «UI and docs» section stays.
+
 ### 3. Install dependencies
 
 Run the guide's Install step (`npm install`). It pulls the `@digo-labs/*` packages from npm — no build of the core monorepo is needed.
