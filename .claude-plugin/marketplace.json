@@ -6,14 +6,9 @@
   },
   "plugins": [
     {
-      "name": "digo-base",
-      "source": "./plugins/digo-base",
-      "description": "Answers about the Digo stack from the design-system docs: assistant."
-    },
-    {
       "name": "digo-core",
       "source": "./plugins/digo-core",
-      "description": "Coding in digo core and digo apps: code, code-in-core, review, context, release-audit."
+      "description": "Coding in digo core and digo apps: code, code-in-core, review, release-audit."
     },
     {
       "name": "digo-ui",
