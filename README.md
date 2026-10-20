@@ -12,10 +12,10 @@ Skills are split by audience and subsystem:
 | Plugin | Use it for | Skills |
 | --- | --- | --- |
 | **digo-base** | any repo, any project | `brainstorm`, `grill-me`, `build-idea`, `assistant` |
-| **digo-core** | coding in digo core and digo apps | `code`, `code-in-core`, `review`, `context` |
-| **digo-ui** | authoring the `@digo-labs/ui` library | `implement-component`, `create-preset` |
+| **digo-core** | coding in digo core and digo apps | `code`, `code-in-core`, `review`, `context`, `release-audit` |
+| **digo-ui** | authoring the `@digo-labs/ui` library | `implement-component`, `create-preset`, `update-presets` |
 | **digo-docs** | the design-system docs site | `implement-component-docs`, `audit-docs` |
-| **digo-app** | building apps on `@digo-labs/*` packages | `create-digo-app`, `destroy-digo-app` |
+| **digo-app** | building apps on `@digo-labs/*` packages | `create-digo-app`, `sync-digo-app`, `secure-digo-app`, `destroy-digo-app` |
 | **digo-media** | generating images, video and other media on Replicate | `create-media`, `replicate` |
 
 ## Install
