@@ -11,7 +11,7 @@ Skills are split by audience and subsystem:
 
 | Plugin | Use it for | Skills |
 | --- | --- | --- |
-| **digo-base** | any repo, any project | `brainstorm`, `grill-me`, `build-idea`, `assistant` |
+| **digo-base** | any repo, any project | `assistant` |
 | **digo-core** | coding in digo core and digo apps | `code`, `code-in-core`, `review`, `context`, `release-audit` |
 | **digo-ui** | authoring the `@digo-labs/ui` library | `implement-component`, `create-preset`, `update-presets` |
 | **digo-docs** | the design-system docs site | `implement-component-docs`, `audit-docs` |
@@ -39,7 +39,7 @@ install the ones you need (`digo-base` and `digo-app` are the usual picks outsid
 Plugin skills are **namespaced by plugin name**:
 
 ```shell
-/digo-base:brainstorm
+/digo-base:assistant
 /digo-core:code
 /digo-ui:implement-component
 /digo-docs:audit-docs

@@ -70,7 +70,6 @@ What landed:
 
 What's next — point, don't push:
 
-- **Shape the idea** — `/brainstorm` turns a vague idea into a buildable concept; `/grill-me` stress-tests a plan the user already has.
 - **Build features** — all code written in this app goes through the `/code` skill; it carries the house style, matches the app's own code, and checks platform APIs against their docs.
 - **Theme it** — swap `preset: defaultPreset` in `src/app.config.ts` for any curated preset exported by `@digo-labs/ui` (list the current options from the package or the theme-presets docs page — don't recite from memory). Custom presets are created in the core monorepo with `/create-preset`.
 - **Stay current** — `npm run update:digo-labs` pulls the latest `@digo-labs/*` packages; `/sync-digo-app` reconciles template-owned config drift down the line.

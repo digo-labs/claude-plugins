@@ -1,6 +1,7 @@
 ---
 name: destroy-digo-app
 description: Tear down a Digo app's AWS infrastructure — Amplify app, S3 bucket, and (optionally) the Postgres schema. Use when the user wants to destroy, tear down, remove, or decommission a digo-labs app's AWS resources, or invokes `/destroy-digo-app`.
+disable-model-invocation: true
 ---
 
 # Destroy a Digo App

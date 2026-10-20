@@ -8,7 +8,7 @@
     {
       "name": "digo-base",
       "source": "./plugins/digo-base",
-      "description": "Portable, repo-agnostic skills: brainstorm, grill-me, build-idea, assistant."
+      "description": "Answers about the Digo stack from the design-system docs: assistant."
     },
     {
       "name": "digo-core",

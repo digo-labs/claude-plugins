@@ -1,6 +1,7 @@
 ---
 name: release-audit
 description: Audit the core monorepo's npm packages — what changed since each package's last publish, which need releasing and at what version — then guide the user through `npm run release` and offer to bump the downstream apps that consume @digo-labs packages. Use when the user asks what packages need updating/publishing, whether npm is stale, wants to release packages, or invokes `/release-audit`.
+disable-model-invocation: true
 ---
 
 # Release Audit
