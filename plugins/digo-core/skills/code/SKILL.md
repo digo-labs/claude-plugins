@@ -39,8 +39,8 @@ reuse it.
   element props it extends.
 - One source per shape and value: shared unions are named types; magic strings are constants; a value two sides
   must agree on (event, channel, header, storage key) is one constant both import.
-- Feature folders: `types.ts`, `consts.ts`, `<feature>-helpers.ts`, components, hooks, and an `index.ts` barrel;
-  import from the barrel. `consts.ts` holds only what two files share or content edited in one place; single-use
+- Feature folders: `<feature>-types.ts`, `<feature>-consts.ts`, `<feature>-helpers.ts`, components, hooks, and an
+  `index.ts` barrel; import from the barrel. `<feature>-consts.ts` holds only what two files share or content edited in one place; single-use
   values stay inline, single-use constants at the top of their file.
 - Two consumers = shared code: extract it and move the original caller in the same change; never copy. To share
   without an import cycle, move the code down to the module both sides import.
