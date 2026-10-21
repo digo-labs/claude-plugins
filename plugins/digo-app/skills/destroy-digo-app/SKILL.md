@@ -35,7 +35,7 @@ Spell out exactly what will be removed (all derived from `package.json` "name"):
 - S3 bucket `<name>-digo-labs-storage` — **and all its contents**.
 - Postgres schema `<name with hyphens → underscores>` — unless `--keep-db`.
 
-Shared `monorepo/*` secrets, the git repo, and `.env` are left untouched.
+Shared `monorepo/*` secrets and the git repo are left untouched.
 
 ### 2. Run destroy
 
@@ -53,7 +53,7 @@ The script prints what it will delete, then asks you to **type the exact app nam
 
 - What was removed (Amplify app, bucket, schema — or schema kept).
 - Anything the script reported it skipped (e.g. "no Amplify app named …; skipping") or couldn't delete.
-- Reminder: the local repo and `.env` remain — delete the directory yourself if you want it gone.
+- Reminder: the local repo remains — delete the directory yourself if you want it gone.
 
 ## Error handling
 
@@ -62,7 +62,8 @@ The script prints what it will delete, then asks you to **type the exact app nam
 | Access denied on a delete call | Provisioner session expired, or its permission set is missing a delete action. | Run `aws sso login --sso-session productionclub`; if it persists, ask an admin to check the Provisioner permission set. |
 | "Could not read name from package.json" | Not run from an app cloned from app-template. | `cd` into the app directory and retry. |
 | Confirmation aborted | Typed name didn't match. | Re-run and type the exact `package.json` "name". |
-| Schema drop fails on missing `.env` | `.env` was removed before teardown. | Re-run with `--keep-db` to skip the schema drop, or restore `.env` (`init-aws` writes it). |
+| ".env not found — it's needed to reach the database" | The app predates `scripts/with-monorepo-secrets.sh`. | Sync the app with `/sync-digo-app` first, or re-run with `--keep-db` to skip the schema drop. Never write the secrets to `.env`. |
+| Schema drop fails reading `monorepo/*` | No SSO session, or not the Provisioner role. | `aws sso login --sso-session productionclub`, and run it through `npm run destroy`. |
 
 ## Do not
 

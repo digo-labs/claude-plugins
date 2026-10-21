@@ -72,7 +72,7 @@ Enumerate the template's tracked files (`git -C <template> ls-files`) and assign
     # intmpl=yes → stale/safe (app holds a prior template version); no → diverged/risky
     ```
     When lineage can't be determined, treat as **risky** (safer — it just becomes its own checkbox).
-- **`merge` (`package.json`)** — diff the template's `scripts`/`overrides` against the app's. A template key absent in the app, or app-added keys → safe. A template key the app has with a **different** value → **risky** (overwriting an app's edit).
+- **`merge` (`package.json`)** — diff the template's `scripts`/`overrides` against the app's. A template key absent in the app, or app-added keys → safe. A template key the app has with a **different** value → **stale/safe** if that value is the key's value in an earlier template `package.json` (`git -C <template> log -p -- package.json`), else **risky** (overwriting an app's edit).
 - **`reviewOnDrift`** — if it differs, record a **manual-review note** (not applied, not a checkbox).
 - **Template-deleted** — an app file matching a `sync`/`scaffoldOnce` glob that is absent from the template `HEAD` **but present in template history** → **risky delete candidate**. (Absent from history too = app-added; leave alone.)
 - `scaffoldOnce` and `ignore` files are skipped entirely.
@@ -100,7 +100,17 @@ Per selected app, operating only on that app's ticked changes:
 - `git -C <app> switch -c sync/app-template` (or reuse it if it exists).
 - Apply: copy each ticked `sync` file from the template (create parent dirs); `git rm` ticked delete candidates; merge ticked `package.json` keys by editing the app's `package.json` (preserve `name` and app-only keys).
 - If `overrides` changed → `npm install` (updates the lockfile). Then validate: `npm run lint` and typecheck (`npx tsc -b`). Report pass/fail; a failure doesn't roll back — surface it for the user.
+- Check the one-time migrations below that the applied changes trigger.
 - **Offer** to `git commit` and `gh pr create` for that app. Never push or open a PR without the user's go-ahead.
+
+### One-time migrations
+
+Check after applying, only when the applied changes include the trigger. Never print a secret value.
+
+- **Secrets out of `.env`** — trigger: `scripts/with-monorepo-secrets.sh` added. Older `init-aws.sh` copied `DATABASE_URL_MONOREPO` and `ADMIN_SECRET` into the app's `.env`; they are now read live from AWS Secrets Manager, and the wrapper removes the `.env` copies itself on its first run. Don't run it during the sync: `.env` is shared by every branch, and the app's current branch still runs plain `digo-db push` until the sync is merged.
+  - Only when the `db:push` key was merged too: otherwise flag it, since the app's own `db:push` still needs `.env`.
+  - Grep the app's own code (`src/`, app-added `scripts/`, `package.json` scripts) for other readers that rely on `.env` for them: `digo-db` calls and uses of the two variables, such as a seed script. Skip those that export their own values (a local stack). Report each one: it should run through `./scripts/with-monorepo-secrets.sh <command>` (with `npx --no-install digo-db …`, under `AWS_PROFILE=provisioner`).
+  - In the summary, tell the user that once the sync is merged, `npm run db:push` (or the read-only `AWS_PROFILE=provisioner ./scripts/with-monorepo-secrets.sh npx --no-install digo-db verify`) removes the copies and proves the database is reachable; it needs an SSO session (`aws sso login --sso-session productionclub`). Check `.env` by key name only (`grep -oE '^[A-Z_]+=' .env`).
 
 ### 7. Summary
 
