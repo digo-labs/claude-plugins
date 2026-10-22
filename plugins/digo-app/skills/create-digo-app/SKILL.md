@@ -72,7 +72,7 @@ What landed:
 What's next — point, don't push:
 
 - **Build features** — all code written in this app goes through the `/code` skill; it carries the house style, matches the app's own code, and checks platform APIs against their docs.
-- **AWS event app** — install `@digo-labs/aws` and pass `brand: createAwsBrand()` to `defineApp` in `src/app.config.ts`; what guests see uses its components.
+- **AWS event app** — install `@digo-labs/aws` and follow its guide (`node_modules/@digo-labs/aws/README.md`, Turn it on): `brand: createAwsBrand()` in `defineApp`, `@digo-labs/aws/styles.css` in `src/index.css`, and the brand line in the app's `CLAUDE.md`; what guests see uses its components.
 - **Stay current** — `npm run update:digo-labs` pulls the latest `@digo-labs/*` packages; `/sync-digo-app` reconciles template-owned config drift down the line.
 - AWS skipped? `npm run init-aws` whenever they're ready.
 

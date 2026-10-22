@@ -61,10 +61,11 @@ return value (it can be a subscription); React Three Fiber copies `uniforms`, so
 - Digo's AWS services (backend, auth, database, storage, AI, realtime, deploy) go only through the `@digo-labs/*`
   APIs. Never call AWS directly, never alias into another package's internals or patch `node_modules`; if core
   can't do it, stop and say so: that is a core change.
-- Each app builds its own UI. AWS event apps (the app renders `Aws*` components or its `CLAUDE.md` says so) are
-  the exception for what guests see: the `@digo-labs/aws` components (`AwsBlock`, `AwsBlockGroup`, `AwsShape`,
-  `AwsPattern`, `AwsTexture` and the rest) with their palette, type and motion as shipped. Position
-  them, even inside canvas or WebGPU scenes; never redraw them or invent their motion. Staff screens stay free.
+- Each app builds its own UI: its own components, another library, or the opt-in `@digo-labs/ui` design system.
+  AWS event apps (the app renders `Aws*` components or its `CLAUDE.md` says so) are the exception for what guests
+  see: the `@digo-labs/aws` components (`AwsBlock`, `AwsBlockGroup`, `AwsShape`, `AwsPattern`, `AwsTexture` and
+  the rest) with their palette, type and motion as shipped. Position them, even inside canvas or WebGPU scenes;
+  never redraw them or invent their motion. Staff screens stay free.
 
 ## Check
 
