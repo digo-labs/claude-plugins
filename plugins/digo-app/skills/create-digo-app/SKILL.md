@@ -72,7 +72,7 @@ What landed:
 What's next — point, don't push:
 
 - **Build features** — all code written in this app goes through the `/code` skill; it carries the house style, matches the app's own code, and checks platform APIs against their docs.
-- **Theme it** — an AWS event app or a themed app adds `preset` to `defineApp` in `src/app.config.ts`, with a curated preset exported by `@digo-labs/ui` (list the current options from the package, don't recite from memory). Custom presets are created in the core monorepo with `/create-preset`.
+- **AWS event app** — install `@digo-labs/aws` and pass `brand: createAwsBrand()` to `defineApp` in `src/app.config.ts`; what guests see uses its components.
 - **Stay current** — `npm run update:digo-labs` pulls the latest `@digo-labs/*` packages; `/sync-digo-app` reconciles template-owned config drift down the line.
 - AWS skipped? `npm run init-aws` whenever they're ready.
 
@@ -85,7 +85,7 @@ Troubleshooting lives in the guides, not here: **Common failures** on [Creating 
 - Edit `app.config.ts` or `db.ts` to set the name — the only name you set is `"name"` in `package.json` (and, optionally, the `<title>` in `index.html`).
 - Run `init-aws` without explicit user confirmation — it creates real, billable AWS resources.
 - Continue after a failed prerequisite, a failed step, or a failed boot verify.
-- Answer from memory what the fetched docs or the cloned template can answer — versions, commands, naming rules, package and preset lists all come from them.
+- Answer from memory what the fetched docs or the cloned template can answer — versions, commands, naming rules, package lists all come from them.
 
 ## After the skill completes
 

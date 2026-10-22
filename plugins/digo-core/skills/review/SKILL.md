@@ -29,7 +29,7 @@ Work through the files yourself, one after another — no agents, at any diff si
 - **Dead code** — unused imports, variables, functions, and exports with no caller. Never a bare hook call: it can be a subscription.
 - **Known traps** — a timer cleared without nulling its handle, `*.test.ts` inside `src/`, R3F `uniforms` passed as a JSX prop and mutated.
 
-Don't flag UI choices: which library, whether core components are used, layout and look are the app's call (except the brand rule above).
+Don't flag UI choices: which library if any, layout and look are the app's call (except the brand rule above).
 
 ## 4. Fix
 

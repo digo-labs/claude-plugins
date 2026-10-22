@@ -48,7 +48,7 @@ reuse it.
   components. Adding a prop must not turn a working component into a chain of wrappers: propose restructures
   first. Split a file that grows to about twice its largest sibling.
 - Tests live in `tests/`, mirroring `src/`, built from the app's real definitions.
-- When the app uses core's styles: typography only with `typo-1`…`typo-18`, `typo-header` / `typo-label` /
+- When the app uses the design system (`@digo-labs/ui`): typography only with `typo-1`…`typo-18`, `typo-header` / `typo-label` /
   `typo-body` / `typo-code` and `typo-weight-N`, never `text-sm`-style sizes (colour classes are fine); colours from
   the palette tokens, never hex; the `cs-*` utilities before hand-written equivalents.
 
@@ -61,9 +61,9 @@ return value (it can be a subscription); React Three Fiber copies `uniforms`, so
 - Digo's AWS services (backend, auth, database, storage, AI, realtime, deploy) go only through the `@digo-labs/*`
   APIs. Never call AWS directly, never alias into another package's internals or patch `node_modules`; if core
   can't do it, stop and say so: that is a core change.
-- UI is the app's choice (core components, another library or its own design). AWS event apps (the app renders
-  `Aws*` components or its `CLAUDE.md` says so) are the exception for what guests see: `AwsBlock`,
-  `AwsBlockGroup`, `AwsShape`, `AwsPattern`, `AwsTexture` with their palette, type and motion as shipped. Position
+- Each app builds its own UI. AWS event apps (the app renders `Aws*` components or its `CLAUDE.md` says so) are
+  the exception for what guests see: the `@digo-labs/aws` components (`AwsBlock`, `AwsBlockGroup`, `AwsShape`,
+  `AwsPattern`, `AwsTexture` and the rest) with their palette, type and motion as shipped. Position
   them, even inside canvas or WebGPU scenes; never redraw them or invent their motion. Staff screens stay free.
 
 ## Check
