@@ -19,7 +19,7 @@ Before anything else, `WebFetch`:
 
 If a fetch fails, stop and tell the user — do not run the workflow from remembered facts.
 
-**Drift rule:** when a fetched page disagrees with what the cloned template actually contains (the `engines` field in `package.json`, the scripts, the name regex in `scripts/init-aws.sh`, the port in `vite.config.ts`), the template wins for execution — and you flag the drift in the final report so the docs get fixed.
+**Drift rule:** when a fetched page disagrees with what the cloned template actually contains (the `engines` field in `package.json`, the scripts, the name regex in `scripts/init-aws.sh`, the port in `package.json`), the template wins for execution — and you flag the drift in the final report so the docs get fixed.
 
 ## Inputs to collect
 
@@ -46,6 +46,18 @@ Follow [Naming Your App](https://design.digo-labs.com/docs/guide/naming-your-app
 
 Then make `CLAUDE.md` the app's own: its title and first paragraph name this app and say what it is (ask in one line if you don't know yet), the template's «Template-owned vs app-owned» section goes, and the «UI and docs» section stays.
 
+### 2b. Give it its own dev port
+
+Each app serves on its own port, so the user never opens the wrong one. The template keeps 8008; clones step by 100
+(8200, 8300, 8400…), which leaves room for Vite's +1 fallback when a second checkout of the same app runs.
+
+- Take the highest `config.port` among the sibling apps' `package.json` files (`<parent>/*/package.json`) and add 100;
+  if none is above 8100, use 8200.
+- Skip it while anything already uses it: `lsof -nP -iTCP:<port> -sTCP:LISTEN`, or a mention in a `.claude/launch.json`
+  or script under `<parent>`.
+- Write it to `"config": { "port": <port> }` in `package.json` (`vite.config.ts` reads it there; template-owned files
+  stay untouched), and replace the port in `CLAUDE.md`'s Run section with it.
+
 ### 3. Install dependencies
 
 Run the guide's Install step (`npm install`). It pulls the `@digo-labs/*` packages from npm — no build of the core monorepo is needed.
@@ -58,7 +70,7 @@ Only if the user opted in — and **confirm once more** first: it creates real, 
 
 Never report success on an unverified scaffold.
 
-- Start the dev server with the preview browser (add a `.claude/launch.json` entry running `npm run dev` on the port from `vite.config.ts`). If no preview/browser tool is available in this session, run the dev server in the background and check the port responds.
+- Start the dev server with the preview browser (add a `.claude/launch.json` entry running `npm run dev` on `config.port` from `package.json`). If no preview/browser tool is available in this session, run the dev server in the background and check the port responds.
 - Confirm the login page renders and the console has no errors. Full Google sign-in can't be automated — the rendered login page is the bar.
 - Take a screenshot for the report. Leave the server running for the user.
 
@@ -66,7 +78,7 @@ Never report success on an unverified scaffold.
 
 What landed:
 
-- Path to the new app, name set in `package.json` (and whether the `<title>` was set), dependencies installed, AWS ran/skipped, boot verified (include the screenshot).
+- Path to the new app, name and dev port set in `package.json` (and whether the `<title>` was set), dependencies installed, AWS ran/skipped, boot verified (include the screenshot).
 - Any **docs drift** found under the drift rule, so the docs page can be fixed.
 
 What's next — point, don't push:
@@ -83,6 +95,7 @@ Troubleshooting lives in the guides, not here: **Common failures** on [Creating 
 ## Do not
 
 - Edit `app.config.ts` or `db.ts` to set the name — the only name you set is `"name"` in `package.json` (and, optionally, the `<title>` in `index.html`).
+- Put the port in `vite.config.ts` — it is template-owned and `/sync-digo-app` overwrites it.
 - Run `init-aws` without explicit user confirmation — it creates real, billable AWS resources.
 - Continue after a failed prerequisite, a failed step, or a failed boot verify.
 - Answer from memory what the fetched docs or the cloned template can answer — versions, commands, naming rules, package lists all come from them.

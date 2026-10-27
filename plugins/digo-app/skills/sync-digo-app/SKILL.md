@@ -112,6 +112,11 @@ Check after applying, only when the applied changes include the trigger. Never p
   - Grep the app's own code (`src/`, app-added `scripts/`, `package.json` scripts) for other readers that rely on `.env` for them: `digo-db` calls and uses of the two variables, such as a seed script. Skip those that export their own values (a local stack). Report each one: it should run through `./scripts/with-monorepo-secrets.sh <command>` (with `npx --no-install digo-db …`, under `AWS_PROFILE=provisioner`).
   - In the summary, tell the user that once the sync is merged, `npm run db:push` (or the read-only `AWS_PROFILE=provisioner ./scripts/with-monorepo-secrets.sh npx --no-install digo-db verify`) removes the copies and proves the database is reachable; it needs an SSO session (`aws sso login --sso-session productionclub`). Check `.env` by key name only (`grep -oE '^[A-Z_]+=' .env`).
 
+- **Own dev port** — trigger: `vite.config.ts` applied and it reads `pkg.config.port`. The app must have
+  `"config": { "port": <n> }` in `package.json` before it runs: carry over the port its old `vite.config.ts` had if it
+  wasn't 8008, else pick one as `/create-digo-app` does (step 2b), and put it in the app's `CLAUDE.md`. Also check that
+  a custom `vite.config.ts` the sync is about to overwrite has nothing else the app needs.
+
 ### 7. Summary
 
 Per app: branch created, files applied, validation result, and anything **held for manual review** (risky items left unticked, `reviewOnDrift` notes, unclassified template files). Remind the user nothing was pushed.
